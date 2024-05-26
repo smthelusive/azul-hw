@@ -1,5 +1,6 @@
 package smthelusive.resource;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -19,12 +20,14 @@ public class GenreResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin","user"})
     public Response getGenres() {
         return Response.ok(genreService.getAll()).build();
     }
 
     @GET
     @Path("{genreId}")
+    @RolesAllowed({"admin","user"})
     public Response getSingleGenre(@PathParam("genreId") long id) {
         return genreService.getSingleGenre(id).map(genre -> Response.ok(genre).build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
@@ -32,6 +35,7 @@ public class GenreResource {
     @POST
     @Path("/create")
     @Transactional
+    @RolesAllowed("admin")
     public Response createGenre(GenreRequestDTO genreRequestDTO) {
         return genreService.create(genreRequestDTO).map(genre -> Response.ok(genre).build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
@@ -40,6 +44,7 @@ public class GenreResource {
     @PUT // todo put or post?
     @Path("update/{genreId}")
     @Transactional
+    @RolesAllowed("admin")
     public Response updateGenre(@PathParam("genreId") long id, GenreRequestDTO genreRequestDTO) {
         try {
             return genreService.update(id, genreRequestDTO)
@@ -55,6 +60,7 @@ public class GenreResource {
     @DELETE
     @Path("delete/{genreId}")
     @Transactional
+    @RolesAllowed("admin")
     public Response deleteGenre(@PathParam("genreId") long id) {
         return genreService.delete(id) ?
                 Response.ok().build() :

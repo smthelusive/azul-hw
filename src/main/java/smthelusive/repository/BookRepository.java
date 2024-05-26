@@ -4,7 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
-import smthelusive.model.Book;
+import smthelusive.entity.business.Book;
 import smthelusive.resource.BookFilterParams;
 import smthelusive.resource.PageParams;
 

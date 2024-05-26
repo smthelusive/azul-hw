@@ -7,7 +7,7 @@ import smthelusive.dto.response.BookResponseDTO;
 import smthelusive.exceptions.AuthorNotFoundException;
 import smthelusive.exceptions.BookNotFoundException;
 import smthelusive.exceptions.GenreNotFoundException;
-import smthelusive.model.Book;
+import smthelusive.entity.business.Book;
 import smthelusive.repository.AuthorRepository;
 import smthelusive.repository.BookRepository;
 import smthelusive.repository.GenreRepository;

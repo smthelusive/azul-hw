@@ -1,4 +1,4 @@
-package smthelusive.model;
+package smthelusive.entity.business;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
@@ -10,7 +10,7 @@ import java.util.Set;
 @Table(name = "genre")
 public class Genre extends PanacheEntityBase {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "genre_id")
     public long genreId;
     public String name;
@@ -25,10 +25,6 @@ public class Genre extends PanacheEntityBase {
 
     public long getGenreId() {
         return genreId;
-    }
-
-    public void setGenreId(long genreId) {
-        this.genreId = genreId;
     }
 
     public String getName() {

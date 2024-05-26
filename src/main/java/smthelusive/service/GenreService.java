@@ -5,7 +5,7 @@ import jakarta.inject.Inject;
 import smthelusive.dto.request.GenreRequestDTO;
 import smthelusive.dto.response.GenreResponseDTO;
 import smthelusive.exceptions.GenreNotFoundException;
-import smthelusive.model.Genre;
+import smthelusive.entity.business.Genre;
 import smthelusive.repository.GenreRepository;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class GenreService {
     public Optional<GenreResponseDTO> create(GenreRequestDTO genreRequestDTO) {
         Genre genre = entityMapper.toEntity(genreRequestDTO);
         genreRepository.persist(genre);
-        return getSingleGenre(genre.genreId); // todo think about this
+        return getSingleGenre(genre.getGenreId()); // todo think about this
     }
 
     public Optional<GenreResponseDTO> update(long genreId, GenreRequestDTO genreRequestDTO) throws GenreNotFoundException {
@@ -40,7 +40,7 @@ public class GenreService {
                         String.format("Genre with id %s does not exist", genreId)));
         entityMapper.updateGenreFromDTO(genreRequestDTO, genre);
         genreRepository.persist(genre);
-        return getSingleGenre(genre.genreId); // todo think about this
+        return getSingleGenre(genre.getGenreId()); // todo think about this
     }
 
     public boolean delete(long genreId) {

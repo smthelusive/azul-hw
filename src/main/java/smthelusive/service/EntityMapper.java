@@ -9,9 +9,9 @@ import smthelusive.dto.request.GenreRequestDTO;
 import smthelusive.dto.response.AuthorResponseDTO;
 import smthelusive.dto.response.BookResponseDTO;
 import smthelusive.dto.response.GenreResponseDTO;
-import smthelusive.model.Author;
-import smthelusive.model.Book;
-import smthelusive.model.Genre;
+import smthelusive.entity.business.Author;
+import smthelusive.entity.business.Book;
+import smthelusive.entity.business.Genre;
 
 @Mapper(componentModel = "CDI")
 public interface EntityMapper {

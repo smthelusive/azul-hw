@@ -3,15 +3,8 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-
-    <changeSet author="dziubenko" id="1">
-        <createTable tableName="book">
-            <column name="id" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="varchar(255)"/>
-        </createTable>
-<!--        todo split actual migrations in separate files-->
-<!--        todo add precondition-->
-    </changeSet>
+    <include id="bims-1" file="db/migrations/26052024_business_structure.sql"/>
+    <include id="bims-2" file="db/migrations/26052024_business_data.sql"/>
+    <include id="bims-3" file="db/migrations/26052024_security_structure.sql"/>
+    <include id="bims-4" file="db/migrations/26052024_security_data.sql"/>
 </databaseChangeLog>

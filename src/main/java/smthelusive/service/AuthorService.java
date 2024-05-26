@@ -5,7 +5,7 @@ import jakarta.inject.Inject;
 import smthelusive.dto.request.AuthorRequestDTO;
 import smthelusive.dto.response.AuthorResponseDTO;
 import smthelusive.exceptions.AuthorNotFoundException;
-import smthelusive.model.Author;
+import smthelusive.entity.business.Author;
 import smthelusive.repository.AuthorRepository;
 
 import java.util.List;

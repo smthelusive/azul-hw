@@ -1,5 +1,6 @@
 package smthelusive.resource;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -19,12 +20,14 @@ public class AuthorResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin","user"})
     public Response getAuthors() {
         return Response.ok(authorService.getAll()).build();
     }
 
     @GET
     @Path("{authorId}")
+    @RolesAllowed({"admin","user"})
     public Response getSingleAuthor(@PathParam("authorId") long id) {
         return authorService.getSingleAuthor(id).map(author -> Response.ok(author).build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
@@ -32,6 +35,7 @@ public class AuthorResource {
     @POST
     @Path("/create")
     @Transactional
+    @RolesAllowed("admin")
     public Response createAuthor(AuthorRequestDTO authorRequestDTO) {
         return authorService.create(authorRequestDTO).map(author -> Response.ok(author).build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
@@ -40,6 +44,7 @@ public class AuthorResource {
     @PUT // todo put or post?
     @Path("update/{authorId}")
     @Transactional
+    @RolesAllowed("admin")
     public Response updateAuthor(@PathParam("authorId") long id, AuthorRequestDTO authorRequestDTO) {
         try {
             return authorService.update(id, authorRequestDTO)
@@ -55,6 +60,7 @@ public class AuthorResource {
     @DELETE
     @Path("delete/{authorId}")
     @Transactional
+    @RolesAllowed("admin")
     public Response deleteAuthor(@PathParam("authorId") long id) {
         return authorService.delete(id) ?
                 Response.ok().build() :

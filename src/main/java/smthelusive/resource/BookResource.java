@@ -1,5 +1,6 @@
 package smthelusive.resource;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -21,12 +22,14 @@ public class BookResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin","user"})
     public Response getBooks(@BeanParam BookFilterParams bookFilterParams, @BeanParam PageParams pageParams) {
         return Response.ok(bookService.getBooksFiltered(bookFilterParams, pageParams)).build();
     }
 
     @GET
     @Path("{bookId}")
+    @RolesAllowed({"admin","user"})
     public Response getSingleBook(@PathParam("bookId") long id) {
         return bookService.getSingleBook(id).map(book -> Response.ok(book).build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
@@ -35,6 +38,7 @@ public class BookResource {
     @POST
     @Path("/create")
     @Transactional
+    @RolesAllowed("admin")
     public Response createBook(BookRequestDTO bookRequestDTO) {
         try {
             return bookService.create(bookRequestDTO).map(book -> Response.ok(book).build())
@@ -48,6 +52,7 @@ public class BookResource {
     @PUT // todo put or post?
     @Path("update/{bookId}")
     @Transactional
+    @RolesAllowed("admin")
     public Response updateBook(@PathParam("bookId") long id, BookRequestDTO bookRequestDTO) {
         // todo request dto validation for not empty list doesn't work
         try {
@@ -63,6 +68,7 @@ public class BookResource {
     @DELETE
     @Path("delete/{bookId}")
     @Transactional
+    @RolesAllowed("admin")
     public Response deleteBook(@PathParam("bookId") long id) {
         return bookService.delete(id) ?
                 Response.ok().build() :
