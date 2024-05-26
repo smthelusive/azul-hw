@@ -4,19 +4,19 @@ import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.QueryParam;
 
 public class PageParams {
-    @QueryParam("pages")
+    @QueryParam("page")
     @DefaultValue("0")
-    private int pages; // todo rename to page
+    private int page;
     @QueryParam("pageSize")
     @DefaultValue("10")
     private int pageSize;
 
-    public int getPages() {
-        return pages;
+    public int getPage() {
+        return page;
     }
 
-    public void setPages(int pages) {
-        this.pages = pages;
+    public void setPage(int page) {
+        this.page = page;
     }
 
     public int getPageSize() {

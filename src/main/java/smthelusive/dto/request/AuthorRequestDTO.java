@@ -1,11 +1,9 @@
-package smthelusive.dto;
+package smthelusive.dto.request;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
 
-public class AuthorDTO {
-    @NotEmpty
-    private long authorId;
+public class AuthorRequestDTO {
     @NotEmpty
     @Max(255)
     private String firstName;
@@ -14,14 +12,6 @@ public class AuthorDTO {
     private String lastName;
     @Max(1000)
     private String bio;
-
-    public long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(long authorId) {
-        this.authorId = authorId;
-    }
 
     public String getFirstName() {
         return firstName;

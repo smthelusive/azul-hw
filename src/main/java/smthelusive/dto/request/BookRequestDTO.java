@@ -1,34 +1,24 @@
-package smthelusive.dto;
+package smthelusive.dto.request;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class BookDTO {
-    @NotEmpty
-    private long bookId;
+public class BookRequestDTO {
     @NotEmpty
     @Max(255)
-    public String title;
+    private String title;
     @NotEmpty
-    public double price;
+    private double price;
     @Max(1000)
-    public String annotation;
-    public int count;
+    private String annotation;
+    private int count;
+
     @NotEmpty
-    private Set<@Valid AuthorDTO> authors = new HashSet<>();
-    private Set<String> genres = new HashSet<>(); // todo genre names should be unique in the DB
-
-    public long getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(long bookId) {
-        this.bookId = bookId;
-    }
+    private Set<Long> authors = new HashSet<>();
+    private Set<Long> genres = new HashSet<>();
 
     public String getTitle() {
         return title;
@@ -62,19 +52,19 @@ public class BookDTO {
         this.count = count;
     }
 
-    public Set<AuthorDTO> getAuthors() {
+    public Set<Long> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(Set<AuthorDTO> authors) {
+    public void setAuthors(Set<Long> authors) {
         this.authors = authors;
     }
 
-    public Set<String> getGenres() {
+    public Set<Long> getGenres() {
         return genres;
     }
 
-    public void setGenres(Set<String> genres) {
+    public void setGenres(Set<Long> genres) {
         this.genres = genres;
     }
 }
