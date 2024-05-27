@@ -1,0 +1,8 @@
+{
+  "annotation": "Some description",
+  "authors": [100],
+  "count": 7,
+  "genres": [1],
+  "price": 17,
+  "title": "NewBook"
+}

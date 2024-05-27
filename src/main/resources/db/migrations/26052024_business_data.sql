@@ -22,3 +22,7 @@ insert into book_genre(book_id, genre_id) values(2, 4);
 insert into book_genre(book_id, genre_id) values(3, 3);
 insert into book_genre(book_id, genre_id) values(3, 2);
 insert into book_genre(book_id, genre_id) values(3, 1);
+
+alter sequence genre_seq restart with 10;
+alter sequence author_seq restart with 10;
+alter sequence book_seq restart with 10;

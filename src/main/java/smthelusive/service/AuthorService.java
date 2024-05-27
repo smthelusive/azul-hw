@@ -9,7 +9,6 @@ import smthelusive.entity.business.Author;
 import smthelusive.repository.AuthorRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -23,27 +22,28 @@ public class AuthorService {
                 .map(author -> entityMapper.toDTO(author)).collect(Collectors.toList());
     }
 
-    public Optional<AuthorResponseDTO> getSingleAuthor(long id) {
-        return authorRepository.find("authorId", id).firstResultOptional().map(entityMapper::toDTO);
+    public AuthorResponseDTO getSingleAuthor(long id) throws AuthorNotFoundException {
+        return authorRepository.find("authorId", id).firstResultOptional()
+                .map(entityMapper::toDTO).orElseThrow(() -> new AuthorNotFoundException(id));
     }
 
-    public Optional<AuthorResponseDTO> create(AuthorRequestDTO authorRequestDTO) {
-        Author author = entityMapper.toEntity(authorRequestDTO);
+    public AuthorResponseDTO create(AuthorRequestDTO authorRequestDTO) {
+        Author author = entityMapper.toEntity(authorRequestDTO); // todo can fail here if request is malformed
         authorRepository.persist(author);
-        return getSingleAuthor(author.authorId); // todo think about this
+        return entityMapper.toDTO(author);
     }
 
-    public Optional<AuthorResponseDTO> update(long authorId, AuthorRequestDTO authorRequestDTO) throws AuthorNotFoundException {
+    public AuthorResponseDTO update(long authorId, AuthorRequestDTO authorRequestDTO) throws AuthorNotFoundException {
         Author author = authorRepository.find("authorId", authorId)
                 .singleResultOptional().stream().findAny()
-                .orElseThrow(() -> new AuthorNotFoundException(
-                        String.format("Author with id %s does not exist", authorId)));
+                .orElseThrow(() -> new AuthorNotFoundException(authorId));
         entityMapper.updateAuthorFromDTO(authorRequestDTO, author);
-        authorRepository.persist(author);
-        return getSingleAuthor(author.authorId); // todo think about this
+        return entityMapper.toDTO(author);
     }
 
-    public boolean delete(long authorId) {
-        return authorRepository.delete(authorId);
+    public void delete(long authorId) throws AuthorNotFoundException {
+        if (!authorRepository.delete(authorId)) {
+            throw new AuthorNotFoundException(authorId);
+        }
     }
 }

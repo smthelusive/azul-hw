@@ -1,4 +1,4 @@
-package smthelusive.user;
+package smthelusive.book;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.http.HttpStatus;

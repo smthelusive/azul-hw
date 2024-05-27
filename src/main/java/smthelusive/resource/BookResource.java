@@ -3,18 +3,21 @@ package smthelusive.resource;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import smthelusive.dto.request.BookRequestDTO;
-import smthelusive.exceptions.AuthorNotFoundException;
 import smthelusive.exceptions.BookNotFoundException;
-import smthelusive.exceptions.GenreNotFoundException;
+import smthelusive.exceptions.InvalidReferenceException;
 import smthelusive.service.BookService;
 
 @Path(BookResource.RESOURCE_PATH)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@APIResponse(responseCode = "200")
 public class BookResource {
     public static final String RESOURCE_PATH = "/api/v1/books";
     @Inject
@@ -30,48 +33,39 @@ public class BookResource {
     @GET
     @Path("{bookId}")
     @RolesAllowed({"admin","user"})
-    public Response getSingleBook(@PathParam("bookId") long id) {
-        return bookService.getSingleBook(id).map(book -> Response.ok(book).build())
-                .orElse(Response.status(Response.Status.NOT_FOUND).build());
+    @APIResponse(responseCode = "404")
+    public Response getSingleBook(@PathParam("bookId") long id) throws BookNotFoundException {
+        return Response.ok(bookService.getSingleBook(id)).build();
     }
 
     @POST
     @Path("/create")
     @Transactional
     @RolesAllowed("admin")
-    public Response createBook(BookRequestDTO bookRequestDTO) {
-        try {
-            return bookService.create(bookRequestDTO).map(book -> Response.ok(book).build())
-                    .orElse(Response.status(Response.Status.NOT_FOUND).build());
-        } catch (AuthorNotFoundException | GenreNotFoundException e) {
-            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(),
-                    e.getMessage()).build();
-        }
+    @APIResponse(responseCode = "400")
+    public Response createBook(@Valid BookRequestDTO bookRequestDTO) throws InvalidReferenceException {
+        return Response.ok(bookService.create(bookRequestDTO)).build();
+
     }
 
     @PUT // todo put or post?
     @Path("update/{bookId}")
     @Transactional
     @RolesAllowed("admin")
-    public Response updateBook(@PathParam("bookId") long id, BookRequestDTO bookRequestDTO) {
+    @APIResponses({@APIResponse(responseCode = "400"), @APIResponse(responseCode = "404")})
+    public Response updateBook(@PathParam("bookId") long id, @Valid BookRequestDTO bookRequestDTO)
+            throws BookNotFoundException, InvalidReferenceException {
         // todo request dto validation for not empty list doesn't work
-        try {
-            return bookService.update(id, bookRequestDTO).map(responseDTO -> Response.ok(responseDTO).build())
-                    .orElse(Response.status(Response.Status.BAD_REQUEST.getStatusCode(),
-                            "book doesn't exist").build());
-        } catch (BookNotFoundException | GenreNotFoundException | AuthorNotFoundException e) {
-            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(),
-                    e.getMessage()).build(); // todo status comes without a message
-        }
+        return Response.ok(bookService.update(id, bookRequestDTO)).build();
     }
 
     @DELETE
     @Path("delete/{bookId}")
     @Transactional
     @RolesAllowed("admin")
-    public Response deleteBook(@PathParam("bookId") long id) {
-        return bookService.delete(id) ?
-                Response.ok().build() :
-                Response.status(Response.Status.NOT_FOUND).build();
+    @APIResponse(responseCode = "404")
+    public Response deleteBook(@PathParam("bookId") long id) throws BookNotFoundException {
+        bookService.delete(id);
+        return Response.ok().build();
     }
 }

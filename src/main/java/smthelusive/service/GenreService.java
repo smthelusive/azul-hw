@@ -2,10 +2,12 @@ package smthelusive.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import smthelusive.dto.request.GenreRequestDTO;
 import smthelusive.dto.response.GenreResponseDTO;
-import smthelusive.exceptions.GenreNotFoundException;
 import smthelusive.entity.business.Genre;
+import smthelusive.exceptions.BookNotFoundException;
+import smthelusive.exceptions.GenreNotFoundException;
 import smthelusive.repository.GenreRepository;
 
 import java.util.List;
@@ -23,27 +25,28 @@ public class GenreService {
                 .map(genre -> entityMapper.toDTO(genre)).collect(Collectors.toList());
     }
 
-    public Optional<GenreResponseDTO> getSingleGenre(long id) {
-        return genreRepository.find("genreId", id).firstResultOptional().map(entityMapper::toDTO);
+    public GenreResponseDTO getSingleGenre(long id) throws GenreNotFoundException {
+        return genreRepository.find("genreId", id).firstResultOptional().map(entityMapper::toDTO)
+                .orElseThrow(() -> new GenreNotFoundException(id));
     }
 
-    public Optional<GenreResponseDTO> create(GenreRequestDTO genreRequestDTO) {
+    public GenreResponseDTO create(GenreRequestDTO genreRequestDTO) {
         Genre genre = entityMapper.toEntity(genreRequestDTO);
         genreRepository.persist(genre);
-        return getSingleGenre(genre.getGenreId()); // todo think about this
+        return entityMapper.toDTO(genre);
     }
 
-    public Optional<GenreResponseDTO> update(long genreId, GenreRequestDTO genreRequestDTO) throws GenreNotFoundException {
+    public GenreResponseDTO update(long genreId, GenreRequestDTO genreRequestDTO) throws GenreNotFoundException {
         Genre genre = genreRepository.find("genreId", genreId)
                 .singleResultOptional().stream().findAny()
-                .orElseThrow(() -> new GenreNotFoundException(
-                        String.format("Genre with id %s does not exist", genreId)));
+                .orElseThrow(() -> new GenreNotFoundException(genreId));
         entityMapper.updateGenreFromDTO(genreRequestDTO, genre);
-        genreRepository.persist(genre);
-        return getSingleGenre(genre.getGenreId()); // todo think about this
+        return entityMapper.toDTO(genre);
     }
 
-    public boolean delete(long genreId) {
-        return genreRepository.delete(genreId);
+    public void delete(long genreId) {
+        if (!genreRepository.delete(genreId)) {
+            throw new GenreNotFoundException(genreId);
+        }
     }
 }

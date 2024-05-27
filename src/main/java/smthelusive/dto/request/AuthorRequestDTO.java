@@ -1,16 +1,16 @@
 package smthelusive.dto.request;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 public class AuthorRequestDTO {
     @NotEmpty
-    @Max(255)
+    @Size(max = 255)
     private String firstName;
     @NotEmpty
-    @Max(255)
+    @Size(max = 255)
     private String lastName;
-    @Max(1000)
+    @Size(max = 1000)
     private String bio;
 
     public String getFirstName() {

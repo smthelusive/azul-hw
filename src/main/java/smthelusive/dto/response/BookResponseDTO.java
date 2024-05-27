@@ -1,23 +1,14 @@
 package smthelusive.dto.response;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotEmpty;
-
 import java.util.HashSet;
 import java.util.Set;
 
 public class BookResponseDTO {
-    @NotEmpty
     private long bookId;
-    @NotEmpty
-    @Max(255)
     public String title;
-    @NotEmpty
     public double price;
-    @Max(1000)
     public String annotation;
     public int count;
-    @NotEmpty
     private Set<AuthorResponseDTO> authors = new HashSet<>();
     private Set<GenreResponseDTO> genres = new HashSet<>();
 

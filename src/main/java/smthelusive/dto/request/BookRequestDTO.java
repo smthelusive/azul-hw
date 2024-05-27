@@ -1,18 +1,19 @@
 package smthelusive.dto.request;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import org.testcontainers.shaded.org.checkerframework.checker.optional.qual.Present;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class BookRequestDTO {
     @NotEmpty
-    @Max(255)
+    @Size(max = 255)
     private String title;
-    @NotEmpty
+    @Present
     private double price;
-    @Max(1000)
+    @Size(max = 1000)
     private String annotation;
     private int count;
 

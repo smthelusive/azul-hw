@@ -1,4 +1,4 @@
-package smthelusive.admin;
+package smthelusive.book;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.http.HttpStatus;
@@ -7,70 +7,71 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 @QuarkusTest
-public class AdminAuthorTest {
+public class AdminBookTest {
     @Test
-    void adminRoleViewAuthors() {
+    void adminRoleViewBooks() {
         given().auth().preemptive()
                 .basic("alice", "alice")
                 .when()
-                .get("/api/v1/authors")
+                .get("/api/v1/books")
                 .then()
                 .statusCode(HttpStatus.SC_OK);
     }
 
     @Test
-    void adminRoleGetSingleAuthor() {
+    void adminRoleGetSingleBook() {
         given().auth().preemptive()
                 .basic("alice", "alice")
                 .when()
-                .get("/api/v1/authors/1")
+                .get("/api/v1/books/1")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
-                .body("bio", is("Super horror author"))
-                .body("firstName", is("Stephen"))
-                .body("lastName", is("King"));
+                .body("title", is("Shining"))
+                .body("annotation", is("Scary stuff"));
     }
 
-
     @Test
-    void adminRoleCreateAuthor() {
+    void adminRoleCreateBook() {
         given().auth().preemptive()
                 .basic("alice", "alice")
                 .when()
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
-                .body(new File("src/test/resources/author_payload.json"))
-                .post("/api/v1/authors/create")
+                .body(new File("src/test/resources/book_payload.json"))
+                .post("/api/v1/books/create")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
-                .body("firstName", is("Joshua"))
-                .body("lastName", is("Bloch"));
+                .body("title", equalTo("NewBook"))
+                .body("count", is(7))
+                .body("price", is(17.0F));
     }
 
     @Test
-    void adminRoleUpdateGenre() {
+    void adminRoleUpdateBook() {
         given().auth().preemptive()
                 .basic("alice", "alice")
                 .when()
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
-                .body(new File("src/test/resources/author_payload.json"))
-                .put("/api/v1/authors/update/2")
+                .body(new File("src/test/resources/book_payload.json"))
+                .put("/api/v1/books/update/2")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
-                .body("firstName", is("Joshua"))
-                .body("lastName", is("Bloch"));
+                .body("title", equalTo("NewBook"))
+                .body("count", is(7))
+                .body("price", is(17.0F));
     }
 
     @Test
-    void adminRoleDeleteGenre() {
+    void adminRoleDeleteBook() {
         given().auth().preemptive()
                 .basic("alice", "alice")
                 .when()
-                .delete("/api/v1/authors/delete/3")
+                .delete("/api/v1/books/delete/3")
                 .then()
                 .statusCode(HttpStatus.SC_OK);
     }

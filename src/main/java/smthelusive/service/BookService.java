@@ -4,10 +4,11 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import smthelusive.dto.request.BookRequestDTO;
 import smthelusive.dto.response.BookResponseDTO;
-import smthelusive.exceptions.AuthorNotFoundException;
-import smthelusive.exceptions.BookNotFoundException;
-import smthelusive.exceptions.GenreNotFoundException;
+import smthelusive.entity.business.Author;
 import smthelusive.entity.business.Book;
+import smthelusive.entity.business.Genre;
+import smthelusive.exceptions.BookNotFoundException;
+import smthelusive.exceptions.InvalidReferenceException;
 import smthelusive.repository.AuthorRepository;
 import smthelusive.repository.BookRepository;
 import smthelusive.repository.GenreRepository;
@@ -16,7 +17,7 @@ import smthelusive.resource.PageParams;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -35,49 +36,59 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<BookResponseDTO> getSingleBook(long id) {
-        return bookRepository.find("bookId", id).firstResultOptional().map(entityMapper::toDTO);
+    public BookResponseDTO getSingleBook(long id) throws BookNotFoundException {
+        return bookRepository.find("bookId", id).firstResultOptional()
+                .map(entityMapper::toDTO).orElseThrow(() -> new BookNotFoundException(id));
     }
 
-    private void enrichWithRelatedEntities(BookRequestDTO bookRequestDTO, Book book) throws AuthorNotFoundException, GenreNotFoundException {
-        book.authors = new HashSet<>();
-        book.genres = new HashSet<>();
+    private Set<Author> getResolvedAuthors(BookRequestDTO bookRequestDTO) throws InvalidReferenceException {
+        Set<Author> newAuthors = new HashSet<>();
         for (Long authorId : bookRequestDTO.getAuthors()) {
-            book.authors.add(authorRepository
+            newAuthors.add(authorRepository
                     .find("authorId", authorId).singleResultOptional()
                     .stream().findAny()
-                    .orElseThrow(() -> new AuthorNotFoundException(
+                    .orElseThrow(() -> new InvalidReferenceException(
                             String.format("Author with id %s does not exist", authorId))));
         }
-
+        return newAuthors;
+    }
+    private Set<Genre> getResolvedGenres(BookRequestDTO bookRequestDTO) throws InvalidReferenceException {
+        Set<Genre> newGenres = new HashSet<>();
         for (Long genreId : bookRequestDTO.getGenres()) {
-            book.genres.add(genreRepository
-                    .find("genreId", genreId).singleResultOptional() // todo refactor
+            newGenres.add(genreRepository
+                    .find("genreId", genreId).singleResultOptional()
                     .stream().findAny()
-                    .orElseThrow(() -> new GenreNotFoundException(
+                    .orElseThrow(() -> new InvalidReferenceException(
                             String.format("Genre with id %s does not exist", genreId))));
         }
+        return newGenres;
     }
 
-    public Optional<BookResponseDTO> create(BookRequestDTO bookRequestDTO)
-            throws AuthorNotFoundException, GenreNotFoundException {
+    public BookResponseDTO create(BookRequestDTO bookRequestDTO) throws InvalidReferenceException {
         Book book = entityMapper.toEntity(bookRequestDTO);
-        enrichWithRelatedEntities(bookRequestDTO, book);
+        Set<Author> resolvedAuthors = getResolvedAuthors(bookRequestDTO);
+        Set<Genre> resolvedGenres = getResolvedGenres(bookRequestDTO); // todo
+        book.genres = resolvedGenres;
+        book.authors = resolvedAuthors;
         bookRepository.persist(book);
-        return getSingleBook(book.bookId); // todo think about this
+        return entityMapper.toDTO(book);
     }
 
-    public Optional<BookResponseDTO> update(long bookId, BookRequestDTO bookRequestDTO)
-            throws BookNotFoundException, AuthorNotFoundException, GenreNotFoundException {
+    public BookResponseDTO update(long bookId, BookRequestDTO bookRequestDTO)
+            throws BookNotFoundException, InvalidReferenceException {
         Book book = bookRepository.find("bookId", bookId).singleResultOptional().stream().findAny()
-                .orElseThrow(() -> new BookNotFoundException(String.format("Book with id %s does not exist", bookId)));
+                .orElseThrow(() -> new BookNotFoundException(bookId));
+        Set<Author> resolvedAuthors = getResolvedAuthors(bookRequestDTO);
+        Set<Genre> resolvedGenres = getResolvedGenres(bookRequestDTO); // todo
+        book.genres = resolvedGenres;
+        book.authors = resolvedAuthors;
         entityMapper.updateBookFromDTO(bookRequestDTO, book);
-        enrichWithRelatedEntities(bookRequestDTO, book);
-        bookRepository.persist(book);
-        return getSingleBook(book.bookId); // todo think about this
+        return entityMapper.toDTO(book);
     }
 
-    public boolean delete(long bookId) {
-        return bookRepository.delete(bookId);
+    public void delete(long bookId) {
+        if (!bookRepository.delete(bookId)) {
+            throw new BookNotFoundException(bookId);
+        }
     }
 }

@@ -4,6 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <include id="bims-1" file="db/migrations/26052024_business_structure.sql"/>
-    <include id="bims-2" file="db/migrations/26052024_security_structure.sql"/>
-    <include id="bims-3" file="db/migrations/26052024_security_data.sql"/>
+    <include id="bims-2" file="db/migrations/26052024_business_data.sql"/>
+    <include id="bims-3" file="db/migrations/26052024_security_structure.sql"/>
+    <include id="bims-4" file="db/migrations/26052024_security_data.sql"/>
 </databaseChangeLog>

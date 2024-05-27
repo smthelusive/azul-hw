@@ -1,7 +1,9 @@
 package smthelusive.exceptions;
 
-public class AuthorNotFoundException extends Exception {
-    public AuthorNotFoundException(String message) {
-        super(message);
+import jakarta.ws.rs.NotFoundException;
+
+public class AuthorNotFoundException extends NotFoundException {
+    public AuthorNotFoundException(long authorId) {
+        super(String.format("Author with id %s does not exist", authorId));
     }
 }

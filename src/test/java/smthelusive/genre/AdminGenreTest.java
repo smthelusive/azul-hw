@@ -1,4 +1,4 @@
-package smthelusive.admin;
+package smthelusive.genre;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.http.HttpStatus;

@@ -1,18 +1,9 @@
 package smthelusive.dto.response;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotEmpty;
-
 public class AuthorResponseDTO {
-    @NotEmpty
     private long authorId;
-    @NotEmpty
-    @Max(255)
     private String firstName;
-    @NotEmpty
-    @Max(255)
     private String lastName;
-    @Max(1000)
     private String bio;
 
     public long getAuthorId() {

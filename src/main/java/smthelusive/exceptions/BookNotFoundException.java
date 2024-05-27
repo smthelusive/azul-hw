@@ -1,7 +1,9 @@
 package smthelusive.exceptions;
 
-public class BookNotFoundException extends Exception {
-    public BookNotFoundException(String message) {
-        super(message);
+import jakarta.ws.rs.NotFoundException;
+
+public class BookNotFoundException extends NotFoundException {
+    public BookNotFoundException(long bookId) {
+        super(String.format("Book with id %s does not exist", bookId));
     }
 }
