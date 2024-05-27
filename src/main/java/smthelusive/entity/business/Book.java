@@ -12,11 +12,11 @@ public class Book extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "book_id")
-    public long bookId;
-    public String title;
-    public double price;
-    public String annotation;
-    public int count;
+    private long bookId;
+    private String title;
+    private double price;
+    private String annotation;
+    private int count;
 
     @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(name = "book_author",
@@ -29,4 +29,40 @@ public class Book extends PanacheEntityBase {
             joinColumns = {@JoinColumn(name = "book_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     public Set<Genre> genres = new HashSet<>();
+
+    public long getBookId() {
+        return bookId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getAnnotation() {
+        return annotation;
+    }
+
+    public void setAnnotation(String annotation) {
+        this.annotation = annotation;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 }

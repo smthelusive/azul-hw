@@ -48,14 +48,13 @@ public class BookResource {
 
     }
 
-    @PUT // todo put or post?
+    @PUT
     @Path("update/{bookId}")
     @Transactional
     @RolesAllowed("admin")
     @APIResponses({@APIResponse(responseCode = "400"), @APIResponse(responseCode = "404")})
     public Response updateBook(@PathParam("bookId") long id, @Valid BookRequestDTO bookRequestDTO)
             throws BookNotFoundException, InvalidReferenceException {
-        // todo request dto validation for not empty list doesn't work
         return Response.ok(bookService.update(id, bookRequestDTO)).build();
     }
 

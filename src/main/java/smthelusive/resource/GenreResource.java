@@ -46,7 +46,7 @@ public class GenreResource {
         return Response.ok(genreService.create(genreRequestDTO)).build();
     }
 
-    @PUT // todo put or post?
+    @PUT
     @Path("update/{genreId}")
     @Transactional
     @RolesAllowed("admin")

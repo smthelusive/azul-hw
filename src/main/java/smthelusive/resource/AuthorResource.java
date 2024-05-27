@@ -46,7 +46,7 @@ public class AuthorResource {
         return Response.ok(authorService.create(authorRequestDTO)).build();
     }
 
-    @PUT // todo put or post?
+    @PUT
     @Path("update/{authorId}")
     @Transactional
     @RolesAllowed("admin")

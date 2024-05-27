@@ -12,22 +12,18 @@ public class Author extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "author_id")
-    public long authorId;
+    private long authorId;
     @Column(name = "first_name")
-    public String firstName;
+    private String firstName;
     @Column(name = "last_name")
-    public String lastName;
+    private String lastName;
     @Column(name = "bio")
-    public String bio;
+    private String bio;
     @ManyToMany(mappedBy = "authors")
     public Set<Book> books = new HashSet<>();
 
     public long getAuthorId() {
         return authorId;
-    }
-
-    public void setAuthorId(long authorId) {
-        this.authorId = authorId;
     }
 
     public String getFirstName() {

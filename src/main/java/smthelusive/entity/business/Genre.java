@@ -12,8 +12,8 @@ public class Genre extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "genre_id")
-    public long genreId;
-    public String name;
+    private long genreId;
+    private String name;
     @ManyToMany(mappedBy = "genres")
     public Set<Book> books = new HashSet<>();
 
@@ -33,13 +33,5 @@ public class Genre extends PanacheEntityBase {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
     }
 }
