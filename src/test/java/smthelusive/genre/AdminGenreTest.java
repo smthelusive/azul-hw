@@ -40,7 +40,7 @@ public class AdminGenreTest {
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/genre_payload.json"))
-                .post("/api/v1/genres/create")
+                .post("/api/v1/genres")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .body("name", is("adventure"));
@@ -54,7 +54,7 @@ public class AdminGenreTest {
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/genre_payload.json"))
-                .put("/api/v1/genres/update/2")
+                .put("/api/v1/genres/2")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .body("name", is("adventure"));
@@ -65,7 +65,7 @@ public class AdminGenreTest {
         given().auth().preemptive()
                 .basic("alice", "alice")
                 .when()
-                .delete("/api/v1/genres/delete/3")
+                .delete("/api/v1/genres/3")
                 .then()
                 .statusCode(HttpStatus.SC_OK);
     }

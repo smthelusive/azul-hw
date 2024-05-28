@@ -43,7 +43,7 @@ public class UserAuthorTest {
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/author_payload.json"))
-                .post("/api/v1/authors/create")
+                .post("/api/v1/authors")
                 .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }
@@ -56,7 +56,7 @@ public class UserAuthorTest {
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/author_payload.json"))
-                .put("/api/v1/authors/update/2")
+                .put("/api/v1/authors/2")
                 .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }
@@ -66,7 +66,7 @@ public class UserAuthorTest {
         given().auth().preemptive()
                 .basic("bob", "bob")
                 .when()
-                .delete("/api/v1/authors/delete/3")
+                .delete("/api/v1/authors/3")
                 .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }

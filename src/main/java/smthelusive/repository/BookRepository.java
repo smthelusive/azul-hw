@@ -12,7 +12,7 @@ import java.util.List;
 
 @ApplicationScoped
 public class BookRepository implements PanacheRepository<Book> {
-    private static final String NO_FILTERING = "all";
+    private static final String UNFILTERED = "all";
     private static final String NONE = "";
 
     /***
@@ -47,7 +47,7 @@ public class BookRepository implements PanacheRepository<Book> {
     }
 
     private boolean filtered(String value) {
-        return !NO_FILTERING.equals(value);
+        return !UNFILTERED.equals(value);
     }
 
     public boolean delete(long id) {

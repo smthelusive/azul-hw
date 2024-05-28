@@ -38,7 +38,6 @@ public class GenreResource {
     }
 
     @POST
-    @Path("/create")
     @Transactional
     @RolesAllowed("admin")
     @APIResponse(responseCode = "400")
@@ -47,7 +46,7 @@ public class GenreResource {
     }
 
     @PUT
-    @Path("update/{genreId}")
+    @Path("{genreId}")
     @Transactional
     @RolesAllowed("admin")
     @APIResponses({@APIResponse(responseCode = "400"), @APIResponse(responseCode = "404")})
@@ -56,7 +55,7 @@ public class GenreResource {
     }
 
     @DELETE
-    @Path("delete/{genreId}")
+    @Path("{genreId}")
     @Transactional
     @RolesAllowed("admin")
     @APIResponse(responseCode = "404")

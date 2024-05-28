@@ -42,7 +42,7 @@ public class UserBookTest {
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/book_payload.json"))
-                .post("/api/v1/books/create")
+                .post("/api/v1/books")
                 .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }
@@ -55,7 +55,7 @@ public class UserBookTest {
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/book_payload.json"))
-                .put("/api/v1/books/update/2")
+                .put("/api/v1/books/2")
                 .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }
@@ -65,7 +65,7 @@ public class UserBookTest {
         given().auth().preemptive()
                 .basic("mary", "mary")
                 .when()
-                .delete("/api/v1/books/delete/3")
+                .delete("/api/v1/books/3")
                 .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }

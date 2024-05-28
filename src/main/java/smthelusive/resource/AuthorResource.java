@@ -38,7 +38,6 @@ public class AuthorResource {
         return Response.ok(authorService.getSingleAuthor(id)).build();
     }
     @POST
-    @Path("/create")
     @Transactional
     @RolesAllowed("admin")
     @APIResponse(responseCode = "400")
@@ -47,7 +46,7 @@ public class AuthorResource {
     }
 
     @PUT
-    @Path("update/{authorId}")
+    @Path("{authorId}")
     @Transactional
     @RolesAllowed("admin")
     @APIResponses({@APIResponse(responseCode = "400"), @APIResponse(responseCode = "404")})
@@ -56,7 +55,7 @@ public class AuthorResource {
     }
 
     @DELETE
-    @Path("delete/{authorId}")
+    @Path("{authorId}")
     @Transactional
     @RolesAllowed("admin")
     @APIResponse(responseCode = "404")

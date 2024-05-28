@@ -39,7 +39,6 @@ public class BookResource {
     }
 
     @POST
-    @Path("/create")
     @Transactional
     @RolesAllowed("admin")
     @APIResponse(responseCode = "400")
@@ -49,7 +48,7 @@ public class BookResource {
     }
 
     @PUT
-    @Path("update/{bookId}")
+    @Path("{bookId}")
     @Transactional
     @RolesAllowed("admin")
     @APIResponses({@APIResponse(responseCode = "400"), @APIResponse(responseCode = "404")})
@@ -59,7 +58,7 @@ public class BookResource {
     }
 
     @DELETE
-    @Path("delete/{bookId}")
+    @Path("{bookId}")
     @Transactional
     @RolesAllowed("admin")
     @APIResponse(responseCode = "404")

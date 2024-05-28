@@ -28,7 +28,7 @@ public class MalformedBookTest {
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/book_malformed_payload.json"))
-                .post("/api/v1/books/create")
+                .post("/api/v1/books")
                 .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
@@ -41,7 +41,7 @@ public class MalformedBookTest {
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/book_invalid_references_payload.json"))
-                .put("/api/v1/books/update/1")
+                .put("/api/v1/books/1")
                 .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
@@ -51,7 +51,7 @@ public class MalformedBookTest {
         given().auth().preemptive()
                 .basic("alice", "alice")
                 .when()
-                .delete("/api/v1/books/delete/100")
+                .delete("/api/v1/books/100")
                 .then()
                 .statusCode(HttpStatus.SC_NOT_FOUND);
     }
