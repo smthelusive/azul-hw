@@ -3,6 +3,7 @@ package smthelusive.genre;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
+import smthelusive.GenericTestSetup;
 
 import java.io.File;
 
@@ -10,13 +11,13 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
 @QuarkusTest
-public class UserGenreTest {
+public class UserGenreTest extends GenericTestSetup {
     @Test
     void userRoleViewGenres() {
         given().auth().preemptive()
-                .basic("bob", "bob")
+                .basic(USER_ROLE_USER, USER_ROLE_PASSWORD)
                 .when()
-                .get("/api/v1/genres")
+                .get(GENRE_ENDPOINT)
                 .then()
                 .statusCode(HttpStatus.SC_OK);
     }
@@ -24,9 +25,9 @@ public class UserGenreTest {
     @Test
     void userRoleGetSingleGenre() {
         given().auth().preemptive()
-                .basic("bob", "bob")
+                .basic(USER_ROLE_USER, USER_ROLE_PASSWORD)
                 .when()
-                .get("/api/v1/genres/1")
+                .get(GENRE_ENDPOINT_ID, 1)
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .body("name", is("horror"));
@@ -35,12 +36,12 @@ public class UserGenreTest {
     @Test
     void userRoleCreateGenre() {
         given().auth().preemptive()
-                .basic("mary", "mary")
+                .basic(USER_ROLE_USER, USER_ROLE_PASSWORD)
                 .when()
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/genre_payload.json"))
-                .post("/api/v1/genres")
+                .post(GENRE_ENDPOINT)
                 .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }
@@ -48,12 +49,12 @@ public class UserGenreTest {
     @Test
     void userRoleUpdateGenre() {
         given().auth().preemptive()
-                .basic("mary", "mary")
+                .basic(USER_ROLE_USER, USER_ROLE_PASSWORD)
                 .when()
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/genre_payload.json"))
-                .put("/api/v1/genres/2")
+                .put(GENRE_ENDPOINT_ID, 2)
                 .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }
@@ -61,9 +62,9 @@ public class UserGenreTest {
     @Test
     void userRoleDeleteGenre() {
         given().auth().preemptive()
-                .basic("mary", "mary")
+                .basic(USER_ROLE_USER, USER_ROLE_PASSWORD)
                 .when()
-                .delete("/api/v1/genres/3")
+                .delete(GENRE_ENDPOINT_ID, 3)
                 .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }

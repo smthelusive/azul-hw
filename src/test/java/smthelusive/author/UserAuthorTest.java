@@ -3,6 +3,7 @@ package smthelusive.author;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
+import smthelusive.GenericTestSetup;
 
 import java.io.File;
 
@@ -10,13 +11,13 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
 @QuarkusTest
-public class UserAuthorTest {
+public class UserAuthorTest extends GenericTestSetup {
     @Test
     void userRoleViewAuthors() {
         given().auth().preemptive()
-                .basic("bob", "bob")
+                .basic(USER_ROLE_USER, USER_ROLE_PASSWORD)
                 .when()
-                .get("/api/v1/authors")
+                .get(AUTHOR_ENDPOINT)
                 .then()
                 .statusCode(HttpStatus.SC_OK);
     }
@@ -24,9 +25,9 @@ public class UserAuthorTest {
     @Test
     void userRoleGetSingleAuthor() {
         given().auth().preemptive()
-                .basic("mary", "mary")
+                .basic(USER_ROLE_USER, USER_ROLE_PASSWORD)
                 .when()
-                .get("/api/v1/authors/1")
+                .get(AUTHOR_ENDPOINT_ID, 1)
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .body("bio", is("Super horror author"))
@@ -38,12 +39,12 @@ public class UserAuthorTest {
     @Test
     void userRoleCreateAuthor() {
         given().auth().preemptive()
-                .basic("bob", "bob")
+                .basic(USER_ROLE_USER, USER_ROLE_PASSWORD)
                 .when()
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/author_payload.json"))
-                .post("/api/v1/authors")
+                .post(AUTHOR_ENDPOINT)
                 .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }
@@ -51,12 +52,12 @@ public class UserAuthorTest {
     @Test
     void userRoleUpdateGenre() {
         given().auth().preemptive()
-                .basic("bob", "bob")
+                .basic(USER_ROLE_USER, USER_ROLE_PASSWORD)
                 .when()
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/author_payload.json"))
-                .put("/api/v1/authors/2")
+                .put(AUTHOR_ENDPOINT_ID, 2)
                 .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }
@@ -64,9 +65,9 @@ public class UserAuthorTest {
     @Test
     void userRoleDeleteGenre() {
         given().auth().preemptive()
-                .basic("bob", "bob")
+                .basic(USER_ROLE_USER, USER_ROLE_PASSWORD)
                 .when()
-                .delete("/api/v1/authors/3")
+                .delete(AUTHOR_ENDPOINT_ID, 3)
                 .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }

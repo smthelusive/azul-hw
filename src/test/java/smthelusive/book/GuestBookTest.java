@@ -3,18 +3,19 @@ package smthelusive.book;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
+import smthelusive.GenericTestSetup;
 
 import java.io.File;
 
 import static io.restassured.RestAssured.given;
 
 @QuarkusTest
-public class GuestBookTest {
+public class GuestBookTest extends GenericTestSetup {
 
     @Test
     void guestRoleViewBooks() {
         given().when()
-                .get("/api/v1/books")
+                .get(BOOK_ENDPOINT)
                 .then()
                 .statusCode(HttpStatus.SC_UNAUTHORIZED);
     }
@@ -22,7 +23,7 @@ public class GuestBookTest {
     @Test
     void guestRoleGetSingleBook() {
         given().when()
-                .get("/api/v1/books/1")
+                .get(BOOK_ENDPOINT_ID, 1)
                 .then()
                 .statusCode(HttpStatus.SC_UNAUTHORIZED);
     }
@@ -33,7 +34,7 @@ public class GuestBookTest {
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/book_payload.json"))
-                .post("/api/v1/books")
+                .post(BOOK_ENDPOINT)
                 .then()
                 .statusCode(HttpStatus.SC_UNAUTHORIZED);
     }
@@ -44,7 +45,7 @@ public class GuestBookTest {
                 .header("Content-Type","application/json" )
                 .header("Accept","application/json" )
                 .body(new File("src/test/resources/book_payload.json"))
-                .put("/api/v1/books/2")
+                .put(BOOK_ENDPOINT_ID, 2)
                 .then()
                 .statusCode(HttpStatus.SC_UNAUTHORIZED);
     }
@@ -52,7 +53,7 @@ public class GuestBookTest {
     @Test
     void guestRoleDeleteBook() {
         given().when()
-                .delete("/api/v1/books/3")
+                .delete(BOOK_ENDPOINT_ID, 3)
                 .then()
                 .statusCode(HttpStatus.SC_UNAUTHORIZED);
     }
