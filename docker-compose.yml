@@ -16,9 +16,6 @@ services:
   quarkus-app:
     image: nataliiadziubenko/azul-hw:1.0.0-SNAPSHOT
     container_name: azul-hw
-#    build:
-#      context: .
-#      dockerfile: src/main/docker/Dockerfile
     environment:
       BIMS_DB_URL: jdbc:postgresql://postgres:5432/bims-db
       BIMS_DB_USER: quarkus

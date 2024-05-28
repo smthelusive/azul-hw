@@ -1,4 +1,4 @@
-# azul-hw
+# BIMS (Book Inventory Management System)
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
@@ -31,41 +31,28 @@ If you want to build an _über-jar_, execute the following command:
 
 The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
 
-## Creating a native executable
+## Building an image
 
-You can create a native executable using: 
 ```shell script
-./mvnw package -Dnative
+./mvnw quarkus:image-build
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
+## Docker compose
+Optionally adjust environment variables and postgres settings, and then run:
+
 ```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
+docker compose up
 ```
 
-You can then execute your native executable with: `./target/azul-hw-1.0.0-SNAPSHOT-runner`
+## Data
+In dev mode, the test business data is created, while production database spins up with ONLY users & roles data.
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
+## Links
+[Swagger UI](http://localhost:8080/q/swagger-ui/)
 
-## Related Guides
+[Healthcheck](http://localhost:8080/q/health)
 
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-- Hibernate ORM ([guide](https://quarkus.io/guides/hibernate-orm)): Define your persistent model with Hibernate ORM and Jakarta Persistence
-- JDBC Driver - H2 ([guide](https://quarkus.io/guides/datasource)): Connect to the H2 database via JDBC
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
+[Liveness](http://localhost:8080/q/health/live)
 
-## Provided Code
+[Readiness](http://localhost:8080/q/health/ready)
 
-### Hibernate ORM
-
-Create your first JPA entity
-
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
-
-
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
