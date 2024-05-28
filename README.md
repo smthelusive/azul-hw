@@ -1,4 +1,4 @@
-# BIMS (Book Inventory Management System)
+# BIMS (Bookstore Inventory Management System)
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
