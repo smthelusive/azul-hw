@@ -13,9 +13,10 @@ import java.util.List;
 @ApplicationScoped
 public class BookRepository implements PanacheRepository<Book> {
     private static final String NO_FILTERING = "all";
+    private static final String NONE = "";
 
     /***
-     * Selects the books filtering by title (fuzzy), author (fuzzy), genre.
+     * Selects the books filtering by title (fuzzy), author (fuzzy), genre (strict).
      * Returns back specified page of a specified page size.
      * @param bookFilterParams book filtering params
      * @param pageParams paging params
@@ -23,24 +24,25 @@ public class BookRepository implements PanacheRepository<Book> {
      */
     public List<Book> getBooksFilteredAndPaged(BookFilterParams bookFilterParams, PageParams pageParams) {
         Parameters parameters = new Parameters();
-        String authorFiltering = "", titleFiltering = "", genreFiltering = "";
+        String authorFiltering = NONE, titleFiltering = NONE, genreFiltering = NONE, joinGenres = NONE, joinAuthors = NONE;
         if (filtered(bookFilterParams.getTitle())) {
             parameters = parameters.and("title", bookFilterParams.getTitle().toLowerCase() + "%");
-            authorFiltering = "and (lower(concat(author.firstName, ' ', author.lastName)) like :author " +
-                    "or lower(concat(author.lastName, ' ', author.firstName)) like :author) ";
+            titleFiltering = "and lower(title) like :title";
         }
         if (filtered(bookFilterParams.getAuthor())) {
             parameters = parameters.and("author", String.join(" ",
                     bookFilterParams.getAuthor().split("\\s*-\\s*")).trim().toLowerCase() + "%");
-            titleFiltering = "and lower(title) like :title ";
+            authorFiltering = "and (lower(concat(author.firstName, ' ', author.lastName)) like :author " +
+                    "or lower(concat(author.lastName, ' ', author.firstName)) like :author)";
+            joinAuthors = "join book.authors author";
         }
         if (filtered(bookFilterParams.getGenre())) {
             parameters = parameters.and("genre", bookFilterParams.getGenre().toLowerCase());
-            genreFiltering = "and lower(genre.name) = :genre ";
+            genreFiltering = "and lower(genre.name) = :genre";
+            joinGenres = "join book.genres genre";
         }
-        String query = String.format(
-                "select book from Book book join book.genres genre join book.authors author where 1 = 1 %s%s%s",
-                titleFiltering, genreFiltering, authorFiltering);
+        String query = String.format("select book from Book book %s %s where 1 = 1 %s %s %s",
+                joinGenres, joinAuthors, titleFiltering, genreFiltering, authorFiltering);
         return find(query, parameters).page(Page.of(pageParams.getPage(), pageParams.getPageSize())).list();
     }
 

@@ -1,4 +1,4 @@
-package smthelusive.exceptions;
+package smthelusive.exceptions.mapper;
 
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;

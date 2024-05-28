@@ -27,7 +27,7 @@ public class BookResource {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"admin","user"})
     public Response getBooks(@BeanParam BookFilterParams bookFilterParams, @BeanParam PageParams pageParams) {
-        return Response.ok(bookService.getBooksFiltered(bookFilterParams, pageParams)).build();
+        return Response.ok(bookService.getBooksFiltered(bookFilterParams, pageParams)).build(); // todo Response.created
     }
 
     @GET

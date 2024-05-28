@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: quarkus-postgres
+    environment:
+      POSTGRES_USER: quarkus
+      POSTGRES_PASSWORD: quarkus
+      POSTGRES_DB: bims-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  quarkus-app:
+    image: nataliiadziubenko/azul-hw:1.0.0-SNAPSHOT
+    container_name: azul-hw
+#    build:
+#      context: .
+#      dockerfile: src/main/docker/Dockerfile
+    environment:
+      BIMS_DB_URL: jdbc:postgresql://postgres:5432/bims-db
+      BIMS_DB_USER: quarkus
+      BIMS_DB_PASSWORD: quarkus
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-data:
