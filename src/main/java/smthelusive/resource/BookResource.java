@@ -14,6 +14,8 @@ import smthelusive.exceptions.BookNotFoundException;
 import smthelusive.exceptions.InvalidReferenceException;
 import smthelusive.service.BookService;
 
+import java.net.URI;
+
 @Path(BookResource.RESOURCE_PATH)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -27,7 +29,7 @@ public class BookResource {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"admin","user"})
     public Response getBooks(@BeanParam BookFilterParams bookFilterParams, @BeanParam PageParams pageParams) {
-        return Response.ok(bookService.getBooksFiltered(bookFilterParams, pageParams)).build(); // todo Response.created
+        return Response.ok(bookService.getBooksFiltered(bookFilterParams, pageParams)).build();
     }
 
     @GET
@@ -43,7 +45,7 @@ public class BookResource {
     @RolesAllowed("admin")
     @APIResponse(responseCode = "400")
     public Response createBook(@Valid BookRequestDTO bookRequestDTO) throws InvalidReferenceException {
-        return Response.ok(bookService.create(bookRequestDTO)).build();
+        return Response.created(URI.create(String.format("%s/%s", RESOURCE_PATH, bookService.create(bookRequestDTO)))).build();
 
     }
 

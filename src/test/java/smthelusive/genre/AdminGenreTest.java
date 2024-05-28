@@ -43,8 +43,7 @@ public class AdminGenreTest extends GenericTestSetup {
                 .body(new File("src/test/resources/genre_payload.json"))
                 .post(GENRE_ENDPOINT)
                 .then()
-                .statusCode(HttpStatus.SC_OK)
-                .body("name", is("adventure"));
+                .statusCode(HttpStatus.SC_CREATED);
     }
 
     @Test

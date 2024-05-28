@@ -45,10 +45,7 @@ public class AdminBookTest extends GenericTestSetup {
                 .body(new File("src/test/resources/book_payload.json"))
                 .post(BOOK_ENDPOINT)
                 .then()
-                .statusCode(HttpStatus.SC_OK)
-                .body("title", equalTo("NewBook"))
-                .body("count", is(7))
-                .body("price", is(17.0F));
+                .statusCode(HttpStatus.SC_CREATED);
     }
 
     @Test

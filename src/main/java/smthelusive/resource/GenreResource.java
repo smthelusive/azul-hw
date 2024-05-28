@@ -13,6 +13,8 @@ import smthelusive.dto.request.GenreRequestDTO;
 import smthelusive.exceptions.GenreNotFoundException;
 import smthelusive.service.GenreService;
 
+import java.net.URI;
+
 @Path(GenreResource.RESOURCE_PATH)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -42,7 +44,8 @@ public class GenreResource {
     @RolesAllowed("admin")
     @APIResponse(responseCode = "400")
     public Response createGenre(@Valid GenreRequestDTO genreRequestDTO) {
-        return Response.ok(genreService.create(genreRequestDTO)).build();
+        return Response.created(URI.create(String.format("%s/%s", RESOURCE_PATH, genreService.create(genreRequestDTO)))).build();
+
     }
 
     @PUT

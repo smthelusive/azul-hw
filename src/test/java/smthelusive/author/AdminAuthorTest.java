@@ -47,9 +47,7 @@ public class AdminAuthorTest extends GenericTestSetup {
                 .body(new File("src/test/resources/author_payload.json"))
                 .post(AUTHOR_ENDPOINT)
                 .then()
-                .statusCode(HttpStatus.SC_OK)
-                .body("firstName", is("Joshua"))
-                .body("lastName", is("Bloch"));
+                .statusCode(HttpStatus.SC_CREATED);
     }
 
     @Test

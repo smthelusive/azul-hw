@@ -45,13 +45,13 @@ public class AuthorService {
     /***
      * Create new author
      * @param authorRequestDTO containing author data
-     * @return AuthorResponseDTO containing data of a newly created author
+     * @return long id of a newly created author
      */
-    public AuthorResponseDTO create(AuthorRequestDTO authorRequestDTO) {
+    public long create(AuthorRequestDTO authorRequestDTO) {
         Author author = entityMapper.toEntity(authorRequestDTO);
         authorRepository.persist(author);
         Log.info(String.format("Author with id %s successfully created", author.getAuthorId()));
-        return entityMapper.toDTO(author);
+        return author.getAuthorId();
     }
 
     /***

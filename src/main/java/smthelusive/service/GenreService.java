@@ -45,13 +45,13 @@ public class GenreService {
     /***
      * Create new genre
      * @param genreRequestDTO containing genre data
-     * @return GenreResponseDTO containing data of a created genre
+     * @return long id of a created genre
      */
-    public GenreResponseDTO create(GenreRequestDTO genreRequestDTO) {
+    public long create(GenreRequestDTO genreRequestDTO) {
         Genre genre = entityMapper.toEntity(genreRequestDTO);
         genreRepository.persist(genre);
         Log.info(String.format("Genre with id %s successfully created", genre.getGenreId()));
-        return entityMapper.toDTO(genre);
+        return genre.getGenreId();
     }
 
     /***

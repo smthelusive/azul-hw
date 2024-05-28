@@ -13,6 +13,8 @@ import smthelusive.dto.request.AuthorRequestDTO;
 import smthelusive.exceptions.AuthorNotFoundException;
 import smthelusive.service.AuthorService;
 
+import java.net.URI;
+
 @Path(AuthorResource.RESOURCE_PATH)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -42,7 +44,8 @@ public class AuthorResource {
     @RolesAllowed("admin")
     @APIResponse(responseCode = "400")
     public Response createAuthor(@Valid AuthorRequestDTO authorRequestDTO) {
-        return Response.ok(authorService.create(authorRequestDTO)).build();
+        return Response.created(URI.create(String.format("%s/%s", RESOURCE_PATH, authorService.create(authorRequestDTO)))).build();
+
     }
 
     @PUT

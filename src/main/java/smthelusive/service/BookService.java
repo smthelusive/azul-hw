@@ -95,15 +95,15 @@ public class BookService {
     /***
      * Create new book
      * @param bookRequestDTO containing book data
-     * @return BookResponseDTO containing data of created book
+     * @return long id of created book
      * @throws InvalidReferenceException if any of referenced genres or authors does not exist
      */
-    public BookResponseDTO create(BookRequestDTO bookRequestDTO) throws InvalidReferenceException {
+    public long create(BookRequestDTO bookRequestDTO) throws InvalidReferenceException {
         Book book = entityMapper.toEntity(bookRequestDTO);
         updateBooksAuthorsAndGenres(book, getResolvedAuthors(bookRequestDTO), getResolvedGenres(bookRequestDTO));
         bookRepository.persist(book);
         Log.info(String.format("Book with id %s successfully created", book.getBookId()));
-        return entityMapper.toDTO(book);
+        return book.getBookId();
     }
 
     /***
