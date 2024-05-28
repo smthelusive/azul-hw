@@ -5,10 +5,10 @@ import java.util.Set;
 
 public class BookResponseDTO {
     private long bookId;
-    public String title;
-    public double price;
-    public String annotation;
-    public int count;
+    private String title;
+    private double price;
+    private String annotation;
+    private int count;
     private Set<AuthorResponseDTO> authors = new HashSet<>();
     private Set<GenreResponseDTO> genres = new HashSet<>();
 

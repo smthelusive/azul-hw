@@ -6,7 +6,7 @@ import jakarta.inject.Inject;
 import smthelusive.dto.request.GenreRequestDTO;
 import smthelusive.dto.response.GenreResponseDTO;
 import smthelusive.entity.business.Genre;
-import smthelusive.exceptions.GenreNotFoundException;
+import smthelusive.exception.GenreNotFoundException;
 import smthelusive.repository.GenreRepository;
 
 import java.util.List;

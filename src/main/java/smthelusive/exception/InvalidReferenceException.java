@@ -1,4 +1,4 @@
-package smthelusive.exceptions;
+package smthelusive.exception;
 
 public class InvalidReferenceException extends Exception {
     public InvalidReferenceException(String message) {

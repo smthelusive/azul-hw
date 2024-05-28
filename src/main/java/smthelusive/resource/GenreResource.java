@@ -10,7 +10,7 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import smthelusive.dto.request.GenreRequestDTO;
-import smthelusive.exceptions.GenreNotFoundException;
+import smthelusive.exception.GenreNotFoundException;
 import smthelusive.service.GenreService;
 
 import java.net.URI;

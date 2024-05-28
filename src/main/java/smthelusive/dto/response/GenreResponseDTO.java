@@ -2,7 +2,7 @@ package smthelusive.dto.response;
 
 public class GenreResponseDTO {
     private long genreId;
-    public String name;
+    private String name;
 
     public GenreResponseDTO() {
     }

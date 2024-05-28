@@ -10,8 +10,8 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import smthelusive.dto.request.BookRequestDTO;
-import smthelusive.exceptions.BookNotFoundException;
-import smthelusive.exceptions.InvalidReferenceException;
+import smthelusive.exception.BookNotFoundException;
+import smthelusive.exception.InvalidReferenceException;
 import smthelusive.service.BookService;
 
 import java.net.URI;

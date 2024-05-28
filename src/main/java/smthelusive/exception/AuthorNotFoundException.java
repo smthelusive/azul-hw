@@ -1,4 +1,4 @@
-package smthelusive.exceptions;
+package smthelusive.exception;
 
 import jakarta.ws.rs.NotFoundException;
 

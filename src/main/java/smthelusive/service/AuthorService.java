@@ -4,7 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import smthelusive.dto.request.AuthorRequestDTO;
 import smthelusive.dto.response.AuthorResponseDTO;
-import smthelusive.exceptions.AuthorNotFoundException;
+import smthelusive.exception.AuthorNotFoundException;
 import smthelusive.entity.business.Author;
 import smthelusive.repository.AuthorRepository;
 import io.quarkus.logging.Log;

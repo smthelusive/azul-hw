@@ -12,9 +12,9 @@ public class RoleRegistry extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
-    public long roleId;
+    private long roleId;
     @ManyToMany(mappedBy = "roles")
-    public Set<UserRegistry> users;
+    private Set<UserRegistry> users;
     @RolesValue
-    public String role;
+    private String role;
 }

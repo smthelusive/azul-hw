@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 public class GenreRequestDTO {
     @NotEmpty
     @Size(max = 255)
-    public String name;
+    private String name;
 
     public GenreRequestDTO() {
     }

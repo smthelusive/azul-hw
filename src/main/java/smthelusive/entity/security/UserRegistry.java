@@ -17,11 +17,11 @@ public class UserRegistry extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    public long userId;
+    private long userId;
     @Username
-    public String username;
+    private String username;
     @Password
-    public String password;
+    private String password;
     @Roles
     @ManyToMany
     @JoinTable(

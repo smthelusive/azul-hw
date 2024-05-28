@@ -10,7 +10,7 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import smthelusive.dto.request.AuthorRequestDTO;
-import smthelusive.exceptions.AuthorNotFoundException;
+import smthelusive.exception.AuthorNotFoundException;
 import smthelusive.service.AuthorService;
 
 import java.net.URI;

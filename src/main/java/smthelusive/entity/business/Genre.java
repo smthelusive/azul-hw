@@ -17,10 +17,6 @@ public class Genre extends PanacheEntityBase {
     @ManyToMany(mappedBy = "genres")
     public Set<Book> books = new HashSet<>();
 
-    public Genre(String name) {
-        this.name = name;
-    }
-
     public Genre() {}
 
     public long getGenreId() {
