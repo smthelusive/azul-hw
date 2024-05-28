@@ -18,7 +18,6 @@ import java.net.URI;
 @Path(GenreResource.RESOURCE_PATH)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@APIResponse(responseCode = "200")
 public class GenreResource {
     public static final String RESOURCE_PATH = "/api/v1/genres";
     @Inject
@@ -27,6 +26,7 @@ public class GenreResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"admin","user"})
+    @APIResponse(responseCode = "200")
     public Response getGenres() {
         return Response.ok(genreService.getAll()).build();
     }
@@ -34,7 +34,7 @@ public class GenreResource {
     @GET
     @Path("{genreId}")
     @RolesAllowed({"admin","user"})
-    @APIResponse(responseCode = "404")
+    @APIResponses({@APIResponse(responseCode = "200"), @APIResponse(responseCode = "404")})
     public Response getSingleGenre(@PathParam("genreId") long id) throws GenreNotFoundException {
         return Response.ok(genreService.getSingleGenre(id)).build();
     }
@@ -42,7 +42,7 @@ public class GenreResource {
     @POST
     @Transactional
     @RolesAllowed("admin")
-    @APIResponse(responseCode = "400")
+    @APIResponses({@APIResponse(responseCode = "400"), @APIResponse(responseCode = "201")})
     public Response createGenre(@Valid GenreRequestDTO genreRequestDTO) {
         return Response.created(URI.create(String.format("%s/%s", RESOURCE_PATH, genreService.create(genreRequestDTO)))).build();
 
@@ -52,7 +52,7 @@ public class GenreResource {
     @Path("{genreId}")
     @Transactional
     @RolesAllowed("admin")
-    @APIResponses({@APIResponse(responseCode = "400"), @APIResponse(responseCode = "404")})
+    @APIResponses({@APIResponse(responseCode = "400"), @APIResponse(responseCode = "404"), @APIResponse(responseCode = "200")})
     public Response updateGenre(@PathParam("genreId") long id, @Valid GenreRequestDTO genreRequestDTO) throws GenreNotFoundException {
         return Response.ok(genreService.update(id, genreRequestDTO)).build();
     }
@@ -61,7 +61,7 @@ public class GenreResource {
     @Path("{genreId}")
     @Transactional
     @RolesAllowed("admin")
-    @APIResponse(responseCode = "404")
+    @APIResponses({@APIResponse(responseCode = "404"), @APIResponse(responseCode = "200")})
     public Response deleteGenre(@PathParam("genreId") long id) throws GenreNotFoundException {
         genreService.delete(id);
         return Response.ok().build();

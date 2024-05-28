@@ -19,7 +19,6 @@ import java.net.URI;
 @Path(BookResource.RESOURCE_PATH)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@APIResponse(responseCode = "200")
 public class BookResource {
     public static final String RESOURCE_PATH = "/api/v1/books";
     @Inject
@@ -28,6 +27,7 @@ public class BookResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"admin","user"})
+    @APIResponse(responseCode = "200")
     public Response getBooks(@BeanParam BookFilterParams bookFilterParams, @BeanParam PageParams pageParams) {
         return Response.ok(bookService.getBooksFiltered(bookFilterParams, pageParams)).build();
     }
@@ -35,7 +35,7 @@ public class BookResource {
     @GET
     @Path("{bookId}")
     @RolesAllowed({"admin","user"})
-    @APIResponse(responseCode = "404")
+    @APIResponses({@APIResponse(responseCode = "404"), @APIResponse(responseCode = "200")})
     public Response getSingleBook(@PathParam("bookId") long id) throws BookNotFoundException {
         return Response.ok(bookService.getSingleBook(id)).build();
     }
@@ -43,7 +43,7 @@ public class BookResource {
     @POST
     @Transactional
     @RolesAllowed("admin")
-    @APIResponse(responseCode = "400")
+    @APIResponses({@APIResponse(responseCode = "400"), @APIResponse(responseCode = "201")})
     public Response createBook(@Valid BookRequestDTO bookRequestDTO) throws InvalidReferenceException {
         return Response.created(URI.create(String.format("%s/%s", RESOURCE_PATH, bookService.create(bookRequestDTO)))).build();
 
@@ -53,7 +53,7 @@ public class BookResource {
     @Path("{bookId}")
     @Transactional
     @RolesAllowed("admin")
-    @APIResponses({@APIResponse(responseCode = "400"), @APIResponse(responseCode = "404")})
+    @APIResponses({@APIResponse(responseCode = "400"), @APIResponse(responseCode = "404"), @APIResponse(responseCode = "200")})
     public Response updateBook(@PathParam("bookId") long id, @Valid BookRequestDTO bookRequestDTO)
             throws BookNotFoundException, InvalidReferenceException {
         return Response.ok(bookService.update(id, bookRequestDTO)).build();
@@ -63,7 +63,7 @@ public class BookResource {
     @Path("{bookId}")
     @Transactional
     @RolesAllowed("admin")
-    @APIResponse(responseCode = "404")
+    @APIResponses({@APIResponse(responseCode = "404"), @APIResponse(responseCode = "200")})
     public Response deleteBook(@PathParam("bookId") long id) throws BookNotFoundException {
         bookService.delete(id);
         return Response.ok().build();

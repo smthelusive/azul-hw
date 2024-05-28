@@ -8,7 +8,7 @@ insert into author(author_id, first_name, last_name, bio) values (1, 'Stephen', 
 insert into author(author_id, first_name, last_name, bio) values (2, 'Jules', 'Verne', 'One of the best');
 insert into author(author_id, first_name, last_name, bio) values (3, 'Anna', 'Noname', 'She wrote something');
 insert into author(author_id, first_name, last_name, bio) values (4, 'Steven', 'Bartlett', 'Some CEO');
-insert into author(author_id, first_name, last_name, bio) values (5, 'Arthur', 'Konan-Doyle', 'Classic detective author');
+insert into author(author_id, first_name, last_name, bio) values (5, 'Arthur', 'Conan Doyle', 'Classic detective author');
 
 insert into book(book_id, title, price, annotation, count) values(1, 'Shining', 12.50, 'Scary stuff', 21);
 insert into book(book_id, title, price, annotation, count) values(2, 'The Diary of a CEO', 42.00, 'Smarty thoughts', 5);

@@ -48,7 +48,7 @@ public class FuzzyBookFilteringTest extends GenericTestSetup {
         given().auth().preemptive()
                 .basic(USER_ROLE_USER, USER_ROLE_PASSWORD)
                 .when()
-                .get(BOOK_ENDPOINT + "?title=sherlock&genre=detective&author=konan")
+                .get(BOOK_ENDPOINT + "?title=sherlock&genre=detective&author=conan")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .body("size()", is(1));
